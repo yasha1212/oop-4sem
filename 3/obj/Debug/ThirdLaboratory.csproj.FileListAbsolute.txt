@@ -1,0 +1,16 @@
+D:\University\LAB-S\ООП\3\ThirdLaboratory\bin\Debug\ThirdLaboratory.exe.config
+D:\University\LAB-S\ООП\3\ThirdLaboratory\bin\Debug\ThirdLaboratory.exe
+D:\University\LAB-S\ООП\3\ThirdLaboratory\bin\Debug\ThirdLaboratory.pdb
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.csprojAssemblyReference.cache
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.Properties.Resources.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.csproj.GenerateResource.cache
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.csproj.CoreCompileInputs.cache
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.exe
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.pdb
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.BeltForm.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.MainForm.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.DressForm.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.OutwearForm.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.ShirtForm.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.SocksForm.resources
+D:\University\LAB-S\ООП\3\ThirdLaboratory\obj\Debug\ThirdLaboratory.TrousersForm.resources
