@@ -54,10 +54,10 @@ namespace ThirdLaboratory
             dEditFormConstructors = new Dictionary<Type, Func<string, Form>>();
             dEditFormConstructors.Add(typeof(Dress), (string name) => { return new DressForm(name); });
             dEditFormConstructors.Add(typeof(Belt), (string name) => { return new BeltForm(name); });
-            //dEditFormConstructors.Add(typeof(Trousers), (string name) => { return new TrousersForm(name); });
-            //dEditFormConstructors.Add(typeof(Shirt), (string name) => { return new ShirtForm(name); });
-            //dEditFormConstructors.Add(typeof(Socks), (string name) => { return new SocksForm(name); });
-            //dEditFormConstructors.Add(typeof(Outwear), (string name) => { return new OutwearForm(name); });
+            dEditFormConstructors.Add(typeof(Trousers), (string name) => { return new TrousersForm(name); });
+            dEditFormConstructors.Add(typeof(Shirt), (string name) => { return new ShirtForm(name); });
+            dEditFormConstructors.Add(typeof(Socks), (string name) => { return new SocksForm(name); });
+            dEditFormConstructors.Add(typeof(Outwear), (string name) => { return new OutwearForm(name); });
         }
 
         private void bSerialize_Click(object sender, EventArgs e)
