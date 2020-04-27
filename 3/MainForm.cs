@@ -52,7 +52,7 @@ namespace ThirdLaboratory
             dFormConstructors.Add("Outwear", () => { return new OutwearForm(); });
 
             dEditFormConstructors = new Dictionary<Type, Func<string, Form>>();
-            //dEditFormConstructors.Add(typeof(Dress), (string name) => { return new DressForm(name); });
+            dEditFormConstructors.Add(typeof(Dress), (string name) => { return new DressForm(name); });
             dEditFormConstructors.Add(typeof(Belt), (string name) => { return new BeltForm(name); });
             //dEditFormConstructors.Add(typeof(Trousers), (string name) => { return new TrousersForm(name); });
             //dEditFormConstructors.Add(typeof(Shirt), (string name) => { return new ShirtForm(name); });
