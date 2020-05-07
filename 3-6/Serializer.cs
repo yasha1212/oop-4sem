@@ -8,23 +8,30 @@ using System.IO;
 
 namespace ThirdLaboratory
 {
-    public static class Serializer
+    public class Serializer : ISerializer
     {
-        public static void Serialize(string fileName, List<Clothes> list)
+        private string FileName { get; set; }
+
+        public Serializer(string fileName)
+        {
+            FileName = fileName;
+        }
+
+        public void Serialize(List<Clothes> list)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using(FileStream file = new FileStream(fileName, FileMode.OpenOrCreate))
+            using(FileStream file = new FileStream(FileName, FileMode.OpenOrCreate))
             {
                 formatter.Serialize(file, list);
             }
         }
 
-        public static List<Clothes> Deserialize(string fileName)
+        public List<Clothes> Deserialize()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            if(File.Exists(fileName))
+            if(File.Exists(FileName))
             {
-                using(FileStream file = new FileStream(fileName, FileMode.Open))
+                using(FileStream file = new FileStream(FileName, FileMode.Open))
                 {
                     return (List<Clothes>)formatter.Deserialize(file);
                 }
