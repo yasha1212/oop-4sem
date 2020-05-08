@@ -17,40 +17,20 @@ namespace ThirdLaboratory
         Action action;
         Dictionary<string, Func<Form>> dFormConstructors;
         Dictionary<Type, Func<string, Form>> dEditFormConstructors;
-        List<IPlugin> plugins = new List<IPlugin>();
-        readonly string pluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "Plugins");
+        List<IPlugin> plugins;
+        readonly string dataPluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "DataPlugins");
 
         public MainForm()
         {
+            var pluginsLoader = new PluginsLoader(dataPluginsPath);
+            plugins = pluginsLoader.Load();
+
             InitializeComponent();
-            AddPlugins();
             InitializeFormData();
+
             var storage = new StorageService();
             action = UpdateList;
             storage.SetUpdateHandler(action);
-        }
-
-        private void AddPlugins()
-        {
-            plugins.Clear();
-
-            DirectoryInfo pluginsDir = new DirectoryInfo(pluginsPath);
-            if(!pluginsDir.Exists)
-            {
-                pluginsDir.Create();
-            }
-
-            var pluginFiles = Directory.GetFiles(pluginsPath, "*.dll");
-            foreach(var file in pluginFiles)
-            {
-                Assembly asm = Assembly.LoadFrom(file);
-                var types = asm.GetTypes().Where(t => t.GetInterfaces().Where(i => i.FullName == typeof(IPlugin).FullName).Any());
-                foreach(var type in types)
-                {
-                    var plugin = asm.CreateInstance(type.FullName) as IPlugin;
-                    plugins.Add(plugin);
-                }
-            }
         }
 
         private void UpdateList()
