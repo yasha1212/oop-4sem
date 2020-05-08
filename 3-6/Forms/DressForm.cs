@@ -10,45 +10,51 @@ using System.Windows.Forms;
 
 namespace ThirdLaboratory
 {
-    public partial class OutwearForm : Form
+    public partial class DressForm : Form
     {
-        public OutwearForm()
+        public DressForm()
         {
             InitializeComponent();
             InitializeForm();
         }
 
-        public OutwearForm(string itemName)
+        public DressForm(string itemName)
         {
             InitializeComponent();
             InitializeForm();
 
-            Outwear item = (Outwear)Storage.GetItem(itemName);
+            Dress item = (Dress)StorageService.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
             tColor.Text = item.Color;
             tPrice.Text = item.Price.ToString();
             cbType.SelectedItem = item.Type;
+            tLength.Text = item.Length.ToString();
             tName.Enabled = false;
         }
 
         private void InitializeForm()
         {
             tName.Enabled = true;
-            cbType.Items.Add(OutwearTypes.Coat);
-            cbType.Items.Add(OutwearTypes.Denim);
-            cbType.Items.Add(OutwearTypes.Jacket);
-            cbType.Items.Add(OutwearTypes.Windbreaker);
+            cbType.Items.Add(DressType.BabyDoll);
+            cbType.Items.Add(DressType.Bubble);
+            cbType.Items.Add(DressType.Culotte);
+            cbType.Items.Add(DressType.Kimono);
+            cbType.Items.Add(DressType.ShirtDress);
+            cbType.Items.Add(DressType.Smocked);
+            cbType.Items.Add(DressType.Sundress);
+            cbType.Items.Add(DressType.Trumpet);
+            cbType.Items.Add(DressType.ALine);
         }
 
         private void bContinue_Click(object sender, EventArgs e)
         {
             if (tName.TextLength > 0 && tProducer.TextLength > 0 && tMaterial.TextLength > 0 &&
-               tPrice.TextLength > 0 && tColor.TextLength > 0 && cbType.SelectedIndex != -1)
+               tPrice.TextLength > 0 && tLength.TextLength > 0 && cbType.SelectedIndex != -1 && tColor.TextLength > 0)
             {
-                var outwear = new Outwear(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tColor.Text, (OutwearTypes)cbType.SelectedItem);
-                Storage.AddItem(outwear);
+                var dress = new Dress(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), (DressType)cbType.SelectedItem, tColor.Text, Convert.ToDouble(tLength.Text));
+                StorageService.AddItem(dress);
                 this.Close();
             }
         }

@@ -8,11 +8,11 @@ using System.IO;
 
 namespace ThirdLaboratory
 {
-    public class Serializer : ISerializer
+    public class SerializeService : ISerializer
     {
         private string FileName { get; set; }
 
-        public Serializer(string fileName)
+        public SerializeService(string fileName)
         {
             FileName = fileName;
         }

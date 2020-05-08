@@ -20,7 +20,7 @@ namespace ThirdLaboratory
         {
             InitializeComponent();
             InitializeFormData();
-            var storage = new Storage();
+            var storage = new StorageService();
             action = UpdateList;
             storage.SetUpdateHandler(action);
         }
@@ -28,7 +28,7 @@ namespace ThirdLaboratory
         private void UpdateList()
         {
             lbClothes.Items.Clear();
-            foreach(Clothes item in Storage.GetList())
+            foreach(Clothes item in StorageService.GetList())
             {
                 lbClothes.Items.Add(item.Name);
             }
@@ -66,8 +66,8 @@ namespace ThirdLaboratory
             string path = saveFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new Serializer(path);
-                serializer.Serialize(Storage.GetList());
+                var serializer = new SerializeService(path);
+                serializer.Serialize(StorageService.GetList());
             }
         }
 
@@ -77,12 +77,12 @@ namespace ThirdLaboratory
             string path = openFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new Serializer(path);
+                var serializer = new SerializeService(path);
                 var decerializedList = serializer.Deserialize();
-                Storage.ClearStorage();
+                StorageService.ClearStorage();
                 foreach(Clothes item in decerializedList)
                 {
-                    Storage.AddItem(item);
+                    StorageService.AddItem(item);
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace ThirdLaboratory
         {
             if(lbClothes.SelectedIndex != -1)
             {
-                Storage.DeleteItem(lbClothes.SelectedItem.ToString());
+                StorageService.DeleteItem(lbClothes.SelectedItem.ToString());
             }
         }
 
@@ -111,7 +111,7 @@ namespace ThirdLaboratory
             if(lbClothes.SelectedIndex != -1)
             {
                 string itemName = lbClothes.SelectedItem.ToString();
-                var item = Storage.GetItem(itemName);
+                var item = StorageService.GetItem(itemName);
                 Func<string, Form> function = dEditFormConstructors[item.GetType()];
                 Form form = function(itemName);
                 form.ShowDialog();

@@ -23,7 +23,7 @@ namespace ThirdLaboratory
             InitializeComponent();
             InitializeForm();
 
-            Belt item = (Belt)Storage.GetItem(itemName);
+            Belt item = (Belt)StorageService.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
@@ -47,7 +47,7 @@ namespace ThirdLaboratory
                tPrice.TextLength > 0 && tBuckleMaterial.TextLength > 0 && cbBuckleType.SelectedIndex != -1)
             {
                 var belt = new Belt(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tBuckleMaterial.Text, (Buckle)cbBuckleType.SelectedItem);
-                Storage.AddItem(belt);
+                StorageService.AddItem(belt);
                 this.Close();
             }
         }

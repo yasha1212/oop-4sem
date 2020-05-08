@@ -10,49 +10,47 @@ using System.Windows.Forms;
 
 namespace ThirdLaboratory
 {
-    public partial class ShirtForm : Form
+    public partial class TrousersForm : Form
     {
-        public ShirtForm()
+        public TrousersForm()
         {
             InitializeComponent();
             InitializeForm();
         }
 
-        public ShirtForm(string itemName)
+        public TrousersForm(string itemName)
         {
             InitializeComponent();
             InitializeForm();
 
-            Shirt item = (Shirt)Storage.GetItem(itemName);
+            Trousers item = (Trousers)StorageService.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
             tColor.Text = item.Color;
             tPrice.Text = item.Price.ToString();
-            cbCufflink.SelectedItem = item.Cufflink;
-            cbType.SelectedItem = item.CollarType;
+            cbType.SelectedItem = item.Type;
             tName.Enabled = false;
         }
 
         private void InitializeForm()
         {
             tName.Enabled = true;
-            cbCufflink.Items.Add(true);
-            cbCufflink.Items.Add(false);
-            cbType.Items.Add(Collar.Butterfly);
-            cbType.Items.Add(Collar.Classical);
-            cbType.Items.Add(Collar.Kent);
-            cbType.Items.Add(Collar.Mandarin);
-            cbType.Items.Add(Collar.Tab);
+            cbType.Items.Add(TrousersType.Baggy);
+            cbType.Items.Add(TrousersType.Cargo);
+            cbType.Items.Add(TrousersType.Classical);
+            cbType.Items.Add(TrousersType.Flare);
+            cbType.Items.Add(TrousersType.Jeans);
+            cbType.Items.Add(TrousersType.Palazzo);
         }
 
         private void bContinue_Click(object sender, EventArgs e)
         {
             if (tName.TextLength > 0 && tProducer.TextLength > 0 && tMaterial.TextLength > 0 &&
-               tPrice.TextLength > 0 && tColor.TextLength > 0 && cbType.SelectedIndex != -1 && cbCufflink.SelectedIndex != -1)
+               tPrice.TextLength > 0 && tColor.TextLength > 0 && cbType.SelectedIndex != -1)
             {
-                var shirt = new Shirt((Collar)cbType.SelectedItem, (bool)cbCufflink.SelectedItem, tColor.Text, tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text));
-                Storage.AddItem(shirt);
+                var trousers = new Trousers(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tColor.Text, (TrousersType)cbType.SelectedItem);
+                StorageService.AddItem(trousers);
                 this.Close();
             }
         }

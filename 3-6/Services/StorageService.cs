@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ThirdLaboratory
 {
-    public class Storage
+    public class StorageService
     {
         private static Dictionary<string, Clothes> clothes;
         private static event Action UpdateUI;
 
-        public Storage()
+        public StorageService()
         {
             clothes = new Dictionary<string, Clothes>();
         }

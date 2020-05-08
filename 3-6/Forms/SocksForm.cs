@@ -10,38 +10,38 @@ using System.Windows.Forms;
 
 namespace ThirdLaboratory
 {
-    public partial class TrousersForm : Form
+    public partial class SocksForm : Form
     {
-        public TrousersForm()
+        public SocksForm()
         {
             InitializeComponent();
             InitializeForm();
         }
 
-        public TrousersForm(string itemName)
+        public SocksForm(string itemName)
         {
             InitializeComponent();
             InitializeForm();
 
-            Trousers item = (Trousers)Storage.GetItem(itemName);
+            Socks item = (Socks)StorageService.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
             tColor.Text = item.Color;
             tPrice.Text = item.Price.ToString();
-            cbType.SelectedItem = item.Type;
+            cbType.SelectedItem = item.Length;
             tName.Enabled = false;
         }
 
         private void InitializeForm()
         {
             tName.Enabled = true;
-            cbType.Items.Add(TrousersType.Baggy);
-            cbType.Items.Add(TrousersType.Cargo);
-            cbType.Items.Add(TrousersType.Classical);
-            cbType.Items.Add(TrousersType.Flare);
-            cbType.Items.Add(TrousersType.Jeans);
-            cbType.Items.Add(TrousersType.Palazzo);
+            cbType.Items.Add(LengthType.Golf);
+            cbType.Items.Add(LengthType.Liner);
+            cbType.Items.Add(LengthType.MidCalf);
+            cbType.Items.Add(LengthType.NoShow);
+            cbType.Items.Add(LengthType.Ped);
+            cbType.Items.Add(LengthType.Quarter);
         }
 
         private void bContinue_Click(object sender, EventArgs e)
@@ -49,8 +49,8 @@ namespace ThirdLaboratory
             if (tName.TextLength > 0 && tProducer.TextLength > 0 && tMaterial.TextLength > 0 &&
                tPrice.TextLength > 0 && tColor.TextLength > 0 && cbType.SelectedIndex != -1)
             {
-                var trousers = new Trousers(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tColor.Text, (TrousersType)cbType.SelectedItem);
-                Storage.AddItem(trousers);
+                var socks = new Socks(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tColor.Text, (LengthType)cbType.SelectedItem);
+                StorageService.AddItem(socks);
                 this.Close();
             }
         }
