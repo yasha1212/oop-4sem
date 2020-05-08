@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,14 +17,40 @@ namespace ThirdLaboratory
         Action action;
         Dictionary<string, Func<Form>> dFormConstructors;
         Dictionary<Type, Func<string, Form>> dEditFormConstructors;
+        List<IPlugin> plugins = new List<IPlugin>();
+        readonly string pluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "Plugins");
 
         public MainForm()
         {
             InitializeComponent();
+            AddPlugins();
             InitializeFormData();
             var storage = new StorageService();
             action = UpdateList;
             storage.SetUpdateHandler(action);
+        }
+
+        private void AddPlugins()
+        {
+            plugins.Clear();
+
+            DirectoryInfo pluginsDir = new DirectoryInfo(pluginsPath);
+            if(!pluginsDir.Exists)
+            {
+                pluginsDir.Create();
+            }
+
+            var pluginFiles = Directory.GetFiles(pluginsPath, "*.dll");
+            foreach(var file in pluginFiles)
+            {
+                Assembly asm = Assembly.LoadFrom(file);
+                var types = asm.GetTypes().Where(t => t.GetInterfaces().Where(i => i.FullName == typeof(IPlugin).FullName).Any());
+                foreach(var type in types)
+                {
+                    var plugin = asm.CreateInstance(type.FullName) as IPlugin;
+                    plugins.Add(plugin);
+                }
+            }
         }
 
         private void UpdateList()
@@ -58,6 +86,11 @@ namespace ThirdLaboratory
             dEditFormConstructors.Add(typeof(Shirt), (string name) => { return new ShirtForm(name); });
             dEditFormConstructors.Add(typeof(Socks), (string name) => { return new SocksForm(name); });
             dEditFormConstructors.Add(typeof(Outwear), (string name) => { return new OutwearForm(name); });
+
+            foreach(var plugin in plugins)
+            {
+                plugin.Activate(ref dFormConstructors, ref dEditFormConstructors, ref cbTypes);
+            }
         }
 
         private void bSerialize_Click(object sender, EventArgs e)
