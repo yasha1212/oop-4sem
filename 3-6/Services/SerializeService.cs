@@ -12,28 +12,58 @@ namespace ThirdLaboratory
     {
         private string FileName { get; set; }
 
-        public SerializeService(string fileName)
+        private IFunctionalPlugin Plugin { get; set; }
+
+        public SerializeService(string fileName, IFunctionalPlugin plugin)
         {
+            Plugin = plugin;
             FileName = fileName;
         }
 
         public void Serialize(List<Clothes> list)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using(FileStream file = new FileStream(FileName, FileMode.OpenOrCreate))
+
+            using (var file = new FileStream(FileName, FileMode.OpenOrCreate))
             {
-                formatter.Serialize(file, list);
+                if (Plugin == null)
+                {
+                    formatter.Serialize(file, list);
+                }
+                else
+                {
+                    var tempStream = new MemoryStream();
+
+                    formatter.Serialize(tempStream, list);
+                    var byteArr = Plugin.ProcessOutput(tempStream.ToArray());
+                    file.Write(byteArr, 0, byteArr.Length);
+                }
             }
         }
 
         public List<Clothes> Deserialize()
         {
-            BinaryFormatter formatter = new BinaryFormatter();
             if(File.Exists(FileName))
             {
-                using(FileStream file = new FileStream(FileName, FileMode.Open))
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                using (var file = new FileStream(FileName, FileMode.Open))
                 {
-                    return (List<Clothes>)formatter.Deserialize(file);
+                    if (Plugin == null)
+                    {
+                        return formatter.Deserialize(file) as List<Clothes>;
+                    }
+                    else
+                    {
+                        var tempStream = new MemoryStream();
+                        var byteArr = new byte[file.Length];
+
+                        file.Read(byteArr, 0, byteArr.Length);
+                        byteArr = Plugin.ProcessInput(byteArr);
+                        tempStream.Write(byteArr, 0, byteArr.Length);
+                        tempStream.Position = 0;
+                        return formatter.Deserialize(tempStream) as List<Clothes>;
+                    }
                 }
             } 
             else

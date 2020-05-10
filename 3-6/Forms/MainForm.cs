@@ -14,20 +14,28 @@ namespace ThirdLaboratory
 {
     public partial class MainForm : System.Windows.Forms.Form
     {
+        readonly string DATA_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "DataPlugins");
+
+        readonly string FUNCTIONAL_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "FunctionalPlugins");
+
         Action action;
+
         Dictionary<string, Func<Form>> dFormConstructors;
+
         Dictionary<Type, Func<string, Form>> dEditFormConstructors;
+
         List<IPlugin> plugins;
+
         List<IFunctionalPlugin> functionalPlugins;
-        readonly string dataPluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "DataPlugins");
-        readonly string functionalPluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "FunctionalPlugins");
+
+        IFunctionalPlugin currentFuncPlugin = null;
 
         public MainForm()
         {
-            var pluginsLoader = new PluginsLoader<IPlugin>(dataPluginsPath);
+            var pluginsLoader = new PluginsLoader<IPlugin>(DATA_PLUGINS_PATH);
             plugins = pluginsLoader.Load();
 
-            var functionalPluginsLoader = new PluginsLoader<IFunctionalPlugin>(functionalPluginsPath);
+            var functionalPluginsLoader = new PluginsLoader<IFunctionalPlugin>(FUNCTIONAL_PLUGINS_PATH);
             functionalPlugins = functionalPluginsLoader.Load();
 
             InitializeComponent();
@@ -55,6 +63,8 @@ namespace ThirdLaboratory
             cbTypes.Items.Add("Shirt");
             cbTypes.Items.Add("Socks");
             cbTypes.Items.Add("Outwear");
+            cbFuncPlugins.Items.Add("None");
+            cbFuncPlugins.SelectedItem = "None";
 
             dFormConstructors = new Dictionary<string, Func<Form>>();
             dFormConstructors.Add("Dress", () => { return new DressForm(); });
@@ -76,6 +86,10 @@ namespace ThirdLaboratory
             {
                 plugin.Activate(ref dFormConstructors, ref dEditFormConstructors, ref cbTypes);
             }
+            foreach(var plugin in functionalPlugins)
+            {
+                cbFuncPlugins.Items.Add(plugin);
+            }
         }
 
         private void bSerialize_Click(object sender, EventArgs e)
@@ -84,7 +98,7 @@ namespace ThirdLaboratory
             string path = saveFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new SerializeService(path);
+                var serializer = new SerializeService(path, currentFuncPlugin);
                 serializer.Serialize(StorageService.GetList());
             }
         }
@@ -95,7 +109,7 @@ namespace ThirdLaboratory
             string path = openFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new SerializeService(path);
+                var serializer = new SerializeService(path, currentFuncPlugin);
                 var decerializedList = serializer.Deserialize();
                 StorageService.ClearStorage();
                 foreach(Clothes item in decerializedList)
@@ -133,6 +147,21 @@ namespace ThirdLaboratory
                 Func<string, Form> function = dEditFormConstructors[item.GetType()];
                 Form form = function(itemName);
                 form.ShowDialog();
+            }
+        }
+
+        private void bChoose_Click(object sender, EventArgs e)
+        {
+            if(cbFuncPlugins.SelectedIndex != -1)
+            {
+                if(cbFuncPlugins.SelectedItem as string == "None")
+                {
+                    currentFuncPlugin = null;
+                }
+                else
+                {
+                    currentFuncPlugin = cbFuncPlugins.SelectedItem as IFunctionalPlugin;
+                }
             }
         }
     }

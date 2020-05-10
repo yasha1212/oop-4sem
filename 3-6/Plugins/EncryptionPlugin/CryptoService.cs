@@ -6,8 +6,14 @@ namespace EncryptionPlugin
 {
     public class CryptoService : IEncoder
     {
-        public byte[] Encrypt(byte[] data) { }
+        public byte[] Encrypt(byte[] data)
+        {
+            return data;
+        }
 
-        public byte[] Decrypt(byte[] data) { }
+        public byte[] Decrypt(byte[] data)
+        {
+            return data;
+        }
     }
 }
