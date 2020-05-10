@@ -8,6 +8,8 @@ namespace ThirdLaboratory
 {
     public interface IFunctionalPlugin
     {
-        void Activate();
+        byte[] ProcessOutput(byte[] data);
+
+        byte[] ProcessInput(byte[] data);
     }
 }

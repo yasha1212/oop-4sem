@@ -84,7 +84,7 @@ namespace ThirdLaboratory
             string path = saveFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new SerializeService(path, functionalPlugins);
+                var serializer = new SerializeService(path);
                 serializer.Serialize(StorageService.GetList());
             }
         }
@@ -95,7 +95,7 @@ namespace ThirdLaboratory
             string path = openFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new SerializeService(path, functionalPlugins);
+                var serializer = new SerializeService(path);
                 var decerializedList = serializer.Deserialize();
                 StorageService.ClearStorage();
                 foreach(Clothes item in decerializedList)

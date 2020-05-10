@@ -12,11 +12,8 @@ namespace ThirdLaboratory
     {
         private string FileName { get; set; }
 
-        private List<IFunctionalPlugin> Plugins { get; set; }
-
-        public SerializeService(string fileName, List<IFunctionalPlugin> plugins)
+        public SerializeService(string fileName)
         {
-            Plugins = plugins;
             FileName = fileName;
         }
 
