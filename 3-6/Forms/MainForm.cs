@@ -18,12 +18,17 @@ namespace ThirdLaboratory
         Dictionary<string, Func<Form>> dFormConstructors;
         Dictionary<Type, Func<string, Form>> dEditFormConstructors;
         List<IPlugin> plugins;
+        List<IFunctionalPlugin> functionalPlugins;
         readonly string dataPluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "DataPlugins");
+        readonly string functionalPluginsPath = Path.Combine(Directory.GetCurrentDirectory(), "FunctionalPlugins");
 
         public MainForm()
         {
             var pluginsLoader = new PluginsLoader<IPlugin>(dataPluginsPath);
             plugins = pluginsLoader.Load();
+
+            var functionalPluginsLoader = new PluginsLoader<IFunctionalPlugin>(functionalPluginsPath);
+            functionalPlugins = functionalPluginsLoader.Load();
 
             InitializeComponent();
             InitializeFormData();
@@ -79,7 +84,7 @@ namespace ThirdLaboratory
             string path = saveFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new SerializeService(path);
+                var serializer = new SerializeService(path, functionalPlugins);
                 serializer.Serialize(StorageService.GetList());
             }
         }
@@ -90,7 +95,7 @@ namespace ThirdLaboratory
             string path = openFileDialog.FileName;
             if("" != path)
             {
-                var serializer = new SerializeService(path);
+                var serializer = new SerializeService(path, functionalPlugins);
                 var decerializedList = serializer.Deserialize();
                 StorageService.ClearStorage();
                 foreach(Clothes item in decerializedList)

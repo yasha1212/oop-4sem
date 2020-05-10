@@ -67,6 +67,7 @@
     <Compile Include="Forms\DressForm.Designer.cs">
       <DependentUpon>DressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IFunctionalPlugin.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="ISerializer.cs" />
     <Compile Include="Forms\MainForm.cs">

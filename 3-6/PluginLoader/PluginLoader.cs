@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ThirdLaboratory
 {
-    public class PluginsLoader<T> : ILoader<T> where T: class, IPlugin
+    public class PluginsLoader<T> : ILoader<T> where T: class
     {
         public string Path { get; set; }
 
@@ -20,6 +20,12 @@ namespace ThirdLaboratory
         public List<T> Load()
         {
             List<T> plugins = null;
+
+            var dirInfo = new DirectoryInfo(Path);
+            if(!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
 
             plugins = new List<T>();
             var files = Directory.GetFiles(Path, "*.dll");
