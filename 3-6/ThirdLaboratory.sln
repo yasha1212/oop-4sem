@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThirdLaboratory", "ThirdLab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Footwear", "Plugins\Footwear\Footwear.csproj", "{A5F3400E-79EE-49C3-8C86-2A0C0875D6F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionPlugin", "..\Encrypter\EncryptionPlugin.csproj", "{4FEF086C-3C6F-4BAF-A273-23797A82FDF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A5F3400E-79EE-49C3-8C86-2A0C0875D6F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5F3400E-79EE-49C3-8C86-2A0C0875D6F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5F3400E-79EE-49C3-8C86-2A0C0875D6F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FEF086C-3C6F-4BAF-A273-23797A82FDF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FEF086C-3C6F-4BAF-A273-23797A82FDF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FEF086C-3C6F-4BAF-A273-23797A82FDF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FEF086C-3C6F-4BAF-A273-23797A82FDF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

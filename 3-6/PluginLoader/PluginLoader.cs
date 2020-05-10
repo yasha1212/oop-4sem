@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ThirdLaboratory
 {
-    public class PluginsLoader : ILoader<IPlugin>
+    public class PluginsLoader<T> : ILoader<T> where T: class, IPlugin
     {
         public string Path { get; set; }
 
@@ -17,11 +17,11 @@ namespace ThirdLaboratory
             Path = path;
         }
 
-        public List<IPlugin> Load()
+        public List<T> Load()
         {
-            List<IPlugin> plugins = null;
+            List<T> plugins = null;
 
-            plugins = new List<IPlugin>();
+            plugins = new List<T>();
             var files = Directory.GetFiles(Path, "*.dll");
             foreach(var file in files)
             {
@@ -41,9 +41,9 @@ namespace ThirdLaboratory
                     {
                         foreach (var type in types)
                         {
-                            if (type.GetInterface("IPlugin") != null)
+                            if (type.GetInterface(typeof(T).Name) != null)
                             {
-                                var plugin = asm.CreateInstance(type.FullName) as IPlugin;
+                                var plugin = asm.CreateInstance(type.FullName) as T;
                                 plugins.Add(plugin);
                             }
                         }

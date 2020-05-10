@@ -22,7 +22,7 @@ namespace ThirdLaboratory
 
         public MainForm()
         {
-            var pluginsLoader = new PluginsLoader(dataPluginsPath);
+            var pluginsLoader = new PluginsLoader<IPlugin>(dataPluginsPath);
             plugins = pluginsLoader.Load();
 
             InitializeComponent();
