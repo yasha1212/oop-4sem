@@ -39,6 +39,10 @@ namespace EncryptionPlugin
                 {
                     parameters = new Dictionary<string, (byte[], byte[])>();
                 }
+                if(parameters.ContainsKey(FILE_NAME))
+                {
+                    parameters.Remove(FILE_NAME);
+                }
                 parameters.Add(FILE_NAME, (key, iv));
             }
             using(var file = new FileStream(KEYS_FILE_NAME, FileMode.Create))
