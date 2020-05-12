@@ -22,7 +22,7 @@ namespace ThirdLaboratory
 
         public void Serialize(List<Clothes> list)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            var formatter = new BinaryFormatter();
 
             using (var file = new FileStream(FileName, FileMode.OpenOrCreate))
             {
@@ -32,11 +32,14 @@ namespace ThirdLaboratory
                 }
                 else
                 {
-                    var tempStream = new MemoryStream();
-
-                    formatter.Serialize(tempStream, list);
-                    var byteArr = Plugin.ProcessOutput(tempStream.ToArray());
-                    file.Write(byteArr, 0, byteArr.Length);
+                    using (var tempStream = new MemoryStream())
+                    {
+                        formatter.Serialize(tempStream, list);
+                        tempStream.Position = 0;
+                        var result = Plugin.ProcessOutput(tempStream.ToArray(), FileName);
+                        var resultStream = new MemoryStream(result);
+                        resultStream.CopyTo(file);
+                    }
                 }
             }
         }
@@ -45,7 +48,8 @@ namespace ThirdLaboratory
         {
             if(File.Exists(FileName))
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                var formatter = new BinaryFormatter();
+                formatter.Binder = new CustomBinder();
 
                 using (var file = new FileStream(FileName, FileMode.Open))
                 {
@@ -56,13 +60,10 @@ namespace ThirdLaboratory
                     else
                     {
                         var tempStream = new MemoryStream();
-                        var byteArr = new byte[file.Length];
-
-                        file.Read(byteArr, 0, byteArr.Length);
-                        byteArr = Plugin.ProcessInput(byteArr);
-                        tempStream.Write(byteArr, 0, byteArr.Length);
-                        tempStream.Position = 0;
-                        return formatter.Deserialize(tempStream) as List<Clothes>;
+                        file.CopyTo(tempStream);
+                        var result = Plugin.ProcessInput(tempStream.ToArray(), FileName);
+                        var resultStream = new MemoryStream(result);
+                        return formatter.Deserialize(resultStream) as List<Clothes>;
                     }
                 }
             } 

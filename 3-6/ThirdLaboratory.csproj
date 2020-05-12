@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomBinder.cs" />
     <Compile Include="DataClasses\Belt.cs" />
     <Compile Include="Forms\BeltForm.cs">
       <SubType>Form</SubType>
