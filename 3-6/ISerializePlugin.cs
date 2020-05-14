@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ThirdLaboratory
 {
-    interface ISerializer
+    public interface ISerializePlugin
     {
-        void Serialize(List<Clothes> list);
+        byte[] Serialize(List<Clothes> list);
 
-        List<Clothes> Deserialize();
+        List<Clothes> Deserialize(byte[] source);
     }
 }

@@ -8,7 +8,7 @@ using ThirdLaboratory;
 
 namespace Footwear
 {
-    public class Kernel : IPlugin
+    public class Kernel : IDataPlugin
     {
         public void Activate(ref Dictionary<string, Func<Form>> dFormConstructors, ref Dictionary<Type, Func<string, Form>> dEditFormConstructors, ref ComboBox cb)
         {

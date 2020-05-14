@@ -39,7 +39,7 @@ namespace ThirdLaboratory
                     {
                         types = asm.GetTypes();
                     }
-                    catch (ReflectionTypeLoadException e)
+                    catch (ReflectionTypeLoadException)
                     {
                         types = null;
                     }

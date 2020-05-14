@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ThirdLaboratory
 {
-    public interface IPlugin
+    public interface IDataPlugin
     {
         void Activate(ref Dictionary<string, Func<Form>> dFormConstructors, ref Dictionary<Type, Func<string, Form>> dEditFormConstructors, ref ComboBox cb);
     }

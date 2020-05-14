@@ -38,15 +38,18 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.cbFuncPlugins = new System.Windows.Forms.ComboBox();
-            this.bChoose = new System.Windows.Forms.Button();
+            this.bChooseFunc = new System.Windows.Forms.Button();
             this.laPlugins = new System.Windows.Forms.Label();
             this.laClothes = new System.Windows.Forms.Label();
             this.laMain = new System.Windows.Forms.Label();
+            this.laSerializePlugins = new System.Windows.Forms.Label();
+            this.cbSerializePlugins = new System.Windows.Forms.ComboBox();
+            this.bChooseSerializer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bSerialize
             // 
-            this.bSerialize.Location = new System.Drawing.Point(38, 40);
+            this.bSerialize.Location = new System.Drawing.Point(12, 40);
             this.bSerialize.Name = "bSerialize";
             this.bSerialize.Size = new System.Drawing.Size(152, 31);
             this.bSerialize.TabIndex = 0;
@@ -56,7 +59,7 @@
             // 
             // bDeserialize
             // 
-            this.bDeserialize.Location = new System.Drawing.Point(38, 77);
+            this.bDeserialize.Location = new System.Drawing.Point(12, 77);
             this.bDeserialize.Name = "bDeserialize";
             this.bDeserialize.Size = new System.Drawing.Size(152, 31);
             this.bDeserialize.TabIndex = 1;
@@ -67,14 +70,14 @@
             // lbClothes
             // 
             this.lbClothes.ItemHeight = 16;
-            this.lbClothes.Location = new System.Drawing.Point(224, 12);
+            this.lbClothes.Location = new System.Drawing.Point(186, 12);
             this.lbClothes.Name = "lbClothes";
-            this.lbClothes.Size = new System.Drawing.Size(170, 404);
+            this.lbClothes.Size = new System.Drawing.Size(226, 516);
             this.lbClothes.TabIndex = 2;
             // 
             // bAdd
             // 
-            this.bAdd.Location = new System.Drawing.Point(38, 385);
+            this.bAdd.Location = new System.Drawing.Point(12, 495);
             this.bAdd.Name = "bAdd";
             this.bAdd.Size = new System.Drawing.Size(152, 31);
             this.bAdd.TabIndex = 3;
@@ -86,14 +89,14 @@
             // 
             this.cbTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTypes.FormattingEnabled = true;
-            this.cbTypes.Location = new System.Drawing.Point(38, 355);
+            this.cbTypes.Location = new System.Drawing.Point(12, 465);
             this.cbTypes.Name = "cbTypes";
             this.cbTypes.Size = new System.Drawing.Size(152, 24);
             this.cbTypes.TabIndex = 4;
             // 
             // bDelete
             // 
-            this.bDelete.Location = new System.Drawing.Point(38, 114);
+            this.bDelete.Location = new System.Drawing.Point(12, 114);
             this.bDelete.Name = "bDelete";
             this.bDelete.Size = new System.Drawing.Size(152, 31);
             this.bDelete.TabIndex = 5;
@@ -103,7 +106,7 @@
             // 
             // bEdit
             // 
-            this.bEdit.Location = new System.Drawing.Point(38, 151);
+            this.bEdit.Location = new System.Drawing.Point(12, 151);
             this.bEdit.Name = "bEdit";
             this.bEdit.Size = new System.Drawing.Size(152, 31);
             this.bEdit.TabIndex = 6;
@@ -115,28 +118,28 @@
             // 
             this.cbFuncPlugins.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFuncPlugins.FormattingEnabled = true;
-            this.cbFuncPlugins.Location = new System.Drawing.Point(38, 240);
+            this.cbFuncPlugins.Location = new System.Drawing.Point(12, 233);
             this.cbFuncPlugins.Name = "cbFuncPlugins";
             this.cbFuncPlugins.Size = new System.Drawing.Size(152, 24);
             this.cbFuncPlugins.TabIndex = 8;
             // 
-            // bChoose
+            // bChooseFunc
             // 
-            this.bChoose.Location = new System.Drawing.Point(38, 270);
-            this.bChoose.Name = "bChoose";
-            this.bChoose.Size = new System.Drawing.Size(152, 31);
-            this.bChoose.TabIndex = 7;
-            this.bChoose.Text = "Make current";
-            this.bChoose.UseVisualStyleBackColor = true;
-            this.bChoose.Click += new System.EventHandler(this.bChoose_Click);
+            this.bChooseFunc.Location = new System.Drawing.Point(12, 263);
+            this.bChooseFunc.Name = "bChooseFunc";
+            this.bChooseFunc.Size = new System.Drawing.Size(152, 31);
+            this.bChooseFunc.TabIndex = 7;
+            this.bChooseFunc.Text = "Make current";
+            this.bChooseFunc.UseVisualStyleBackColor = true;
+            this.bChooseFunc.Click += new System.EventHandler(this.bChooseFunc_Click);
             // 
             // laPlugins
             // 
             this.laPlugins.AutoSize = true;
             this.laPlugins.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.laPlugins.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.laPlugins.Location = new System.Drawing.Point(38, 206);
-            this.laPlugins.MinimumSize = new System.Drawing.Size(152, 0);
+            this.laPlugins.Location = new System.Drawing.Point(12, 203);
+            this.laPlugins.MinimumSize = new System.Drawing.Size(152, 2);
             this.laPlugins.Name = "laPlugins";
             this.laPlugins.Size = new System.Drawing.Size(152, 19);
             this.laPlugins.TabIndex = 9;
@@ -148,8 +151,8 @@
             this.laClothes.AutoSize = true;
             this.laClothes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.laClothes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.laClothes.Location = new System.Drawing.Point(38, 324);
-            this.laClothes.MinimumSize = new System.Drawing.Size(152, 0);
+            this.laClothes.Location = new System.Drawing.Point(12, 434);
+            this.laClothes.MinimumSize = new System.Drawing.Size(152, 2);
             this.laClothes.Name = "laClothes";
             this.laClothes.Size = new System.Drawing.Size(153, 19);
             this.laClothes.TabIndex = 10;
@@ -161,24 +164,59 @@
             this.laMain.AutoSize = true;
             this.laMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.laMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.laMain.Location = new System.Drawing.Point(39, 9);
-            this.laMain.MinimumSize = new System.Drawing.Size(152, 0);
+            this.laMain.Location = new System.Drawing.Point(12, 12);
+            this.laMain.MinimumSize = new System.Drawing.Size(152, 2);
             this.laMain.Name = "laMain";
             this.laMain.Size = new System.Drawing.Size(152, 19);
             this.laMain.TabIndex = 11;
             this.laMain.Text = "Main";
             this.laMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // laSerializePlugins
+            // 
+            this.laSerializePlugins.AutoSize = true;
+            this.laSerializePlugins.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.laSerializePlugins.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.laSerializePlugins.Location = new System.Drawing.Point(12, 316);
+            this.laSerializePlugins.MinimumSize = new System.Drawing.Size(152, 2);
+            this.laSerializePlugins.Name = "laSerializePlugins";
+            this.laSerializePlugins.Size = new System.Drawing.Size(152, 19);
+            this.laSerializePlugins.TabIndex = 12;
+            this.laSerializePlugins.Text = "Serialize Plugins";
+            this.laSerializePlugins.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cbSerializePlugins
+            // 
+            this.cbSerializePlugins.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSerializePlugins.FormattingEnabled = true;
+            this.cbSerializePlugins.Location = new System.Drawing.Point(12, 347);
+            this.cbSerializePlugins.Name = "cbSerializePlugins";
+            this.cbSerializePlugins.Size = new System.Drawing.Size(152, 24);
+            this.cbSerializePlugins.TabIndex = 14;
+            // 
+            // bChooseSerializer
+            // 
+            this.bChooseSerializer.Location = new System.Drawing.Point(12, 377);
+            this.bChooseSerializer.Name = "bChooseSerializer";
+            this.bChooseSerializer.Size = new System.Drawing.Size(152, 31);
+            this.bChooseSerializer.TabIndex = 13;
+            this.bChooseSerializer.Text = "Make current";
+            this.bChooseSerializer.UseVisualStyleBackColor = true;
+            this.bChooseSerializer.Click += new System.EventHandler(this.bChooseSerializer_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 428);
+            this.ClientSize = new System.Drawing.Size(424, 536);
+            this.Controls.Add(this.cbSerializePlugins);
+            this.Controls.Add(this.bChooseSerializer);
+            this.Controls.Add(this.laSerializePlugins);
             this.Controls.Add(this.laMain);
             this.Controls.Add(this.laClothes);
             this.Controls.Add(this.laPlugins);
             this.Controls.Add(this.cbFuncPlugins);
-            this.Controls.Add(this.bChoose);
+            this.Controls.Add(this.bChooseFunc);
             this.Controls.Add(this.bEdit);
             this.Controls.Add(this.bDelete);
             this.Controls.Add(this.cbTypes);
@@ -206,10 +244,13 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ComboBox cbFuncPlugins;
-        private System.Windows.Forms.Button bChoose;
+        private System.Windows.Forms.Button bChooseFunc;
         private System.Windows.Forms.Label laPlugins;
         private System.Windows.Forms.Label laClothes;
         private System.Windows.Forms.Label laMain;
+        private System.Windows.Forms.Label laSerializePlugins;
+        private System.Windows.Forms.ComboBox cbSerializePlugins;
+        private System.Windows.Forms.Button bChooseSerializer;
     }
 }
 

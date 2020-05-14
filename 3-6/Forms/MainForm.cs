@@ -18,25 +18,34 @@ namespace ThirdLaboratory
 
         readonly string FUNCTIONAL_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "FunctionalPlugins");
 
+        readonly string SERIALIZE_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "SerializePlugins");
+
         Action action;
 
         Dictionary<string, Func<Form>> dFormConstructors;
 
         Dictionary<Type, Func<string, Form>> dEditFormConstructors;
 
-        List<IPlugin> plugins;
+        List<IDataPlugin> dataPlugins;
 
         List<IFunctionalPlugin> functionalPlugins;
 
+        List<ISerializePlugin> serializePlugins;
+
         IFunctionalPlugin currentFuncPlugin = null;
+
+        ISerializePlugin currentSerializePlugin = null;
 
         public MainForm()
         {
-            var pluginsLoader = new PluginsLoader<IPlugin>(DATA_PLUGINS_PATH);
-            plugins = pluginsLoader.Load();
+            var pluginsLoader = new PluginsLoader<IDataPlugin>(DATA_PLUGINS_PATH);
+            dataPlugins = pluginsLoader.Load();
 
             var functionalPluginsLoader = new PluginsLoader<IFunctionalPlugin>(FUNCTIONAL_PLUGINS_PATH);
             functionalPlugins = functionalPluginsLoader.Load();
+
+            var serializePluginsLoader = new PluginsLoader<ISerializePlugin>(SERIALIZE_PLUGINS_PATH);
+            serializePlugins = serializePluginsLoader.Load();
 
             InitializeComponent();
             InitializeFormData();
@@ -65,6 +74,8 @@ namespace ThirdLaboratory
             cbTypes.Items.Add("Outwear");
             cbFuncPlugins.Items.Add("None");
             cbFuncPlugins.SelectedItem = "None";
+            cbSerializePlugins.Items.Add("None");
+            cbSerializePlugins.SelectedItem = "None";
 
             dFormConstructors = new Dictionary<string, Func<Form>>();
             dFormConstructors.Add("Dress", () => { return new DressForm(); });
@@ -82,7 +93,7 @@ namespace ThirdLaboratory
             dEditFormConstructors.Add(typeof(Socks), (string name) => { return new SocksForm(name); });
             dEditFormConstructors.Add(typeof(Outwear), (string name) => { return new OutwearForm(name); });
 
-            foreach(var plugin in plugins)
+            foreach(var plugin in dataPlugins)
             {
                 plugin.Activate(ref dFormConstructors, ref dEditFormConstructors, ref cbTypes);
             }
@@ -90,31 +101,57 @@ namespace ThirdLaboratory
             {
                 cbFuncPlugins.Items.Add(plugin);
             }
+            foreach(var plugin in serializePlugins)
+            {
+                cbSerializePlugins.Items.Add(plugin);
+            }
         }
 
         private void bSerialize_Click(object sender, EventArgs e)
         {
-            saveFileDialog.ShowDialog();
-            string path = saveFileDialog.FileName;
-            if("" != path)
+            if (currentSerializePlugin != null)
             {
-                var serializer = new SerializeService(path, currentFuncPlugin);
-                serializer.Serialize(StorageService.GetList());
+                saveFileDialog.ShowDialog();
+                string path = saveFileDialog.FileName;
+                if ("" != path)
+                {
+                    using (var file = new FileStream(path, FileMode.Create))
+                    {
+                        var byteArr = currentSerializePlugin.Serialize(StorageService.GetList());
+                        if (currentFuncPlugin != null)
+                        {
+                            byteArr = currentFuncPlugin.ProcessOutput(byteArr, path);
+                        }
+                        file.Write(byteArr, 0, byteArr.Length);
+                    }
+                }
             }
         }
 
         private void bDeserialize_Click(object sender, EventArgs e)
         {
-            openFileDialog.ShowDialog();
-            string path = openFileDialog.FileName;
-            if("" != path)
+            if (currentSerializePlugin != null)
             {
-                var serializer = new SerializeService(path, currentFuncPlugin);
-                var decerializedList = serializer.Deserialize();
-                StorageService.ClearStorage();
-                foreach(Clothes item in decerializedList)
+                openFileDialog.ShowDialog();
+                string path = openFileDialog.FileName;
+                if ("" != path)
                 {
-                    StorageService.AddItem(item);
+                    using (var file = new FileStream(path, FileMode.Open))
+                    {
+                        var tempStream = new MemoryStream();
+                        file.CopyTo(tempStream);
+                        var byteArr = tempStream.ToArray();
+                        if (currentFuncPlugin != null)
+                        {
+                            byteArr = currentFuncPlugin.ProcessInput(byteArr, path);
+                        }
+                        var objList = currentSerializePlugin.Deserialize(byteArr);
+                        StorageService.ClearStorage();
+                        foreach (var item in objList)
+                        {
+                            StorageService.AddItem(item);
+                        }
+                    }
                 }
             }
         }
@@ -150,11 +187,26 @@ namespace ThirdLaboratory
             }
         }
 
-        private void bChoose_Click(object sender, EventArgs e)
+        private void bChooseSerializer_Click(object sender, EventArgs e)
         {
-            if(cbFuncPlugins.SelectedIndex != -1)
+            if (cbSerializePlugins.SelectedIndex != -1)
             {
-                if(cbFuncPlugins.SelectedItem as string == "None")
+                if (cbSerializePlugins.SelectedItem as string == "None")
+                {
+                    currentSerializePlugin = null;
+                }
+                else
+                {
+                    currentSerializePlugin = cbSerializePlugins.SelectedItem as ISerializePlugin;
+                }
+            }
+        }
+
+        private void bChooseFunc_Click(object sender, EventArgs e)
+        {
+            if (cbFuncPlugins.SelectedIndex != -1)
+            {
+                if (cbFuncPlugins.SelectedItem as string == "None")
                 {
                     currentFuncPlugin = null;
                 }

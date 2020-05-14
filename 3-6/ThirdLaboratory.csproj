@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomBinder.cs" />
     <Compile Include="DataClasses\Belt.cs" />
     <Compile Include="Forms\BeltForm.cs">
       <SubType>Form</SubType>
@@ -69,8 +68,8 @@
       <DependentUpon>DressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IFunctionalPlugin.cs" />
-    <Compile Include="IPlugin.cs" />
-    <Compile Include="ISerializer.cs" />
+    <Compile Include="IDataPlugin.cs" />
+    <Compile Include="ISerializePlugin.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,7 +87,6 @@
     <Compile Include="PluginLoader\PluginLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SerializeService.cs" />
     <Compile Include="DataClasses\Shirt.cs" />
     <Compile Include="Forms\ShirtForm.cs">
       <SubType>Form</SubType>
