@@ -15,25 +15,15 @@ namespace ThirdLaboratory
     public partial class MainForm : System.Windows.Forms.Form
     {
         readonly string DATA_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "DataPlugins");
-
         readonly string FUNCTIONAL_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "FunctionalPlugins");
-
         readonly string SERIALIZE_PLUGINS_PATH = Path.Combine(Directory.GetCurrentDirectory(), "SerializePlugins");
-
         Action action;
-
         Dictionary<string, Func<Form>> dFormConstructors;
-
         Dictionary<Type, Func<string, Form>> dEditFormConstructors;
-
         List<IDataPlugin> dataPlugins;
-
         List<IFunctionalPlugin> functionalPlugins;
-
         List<ISerializePlugin> serializePlugins;
-
         IFunctionalPlugin currentFuncPlugin = null;
-
         ISerializePlugin currentSerializePlugin = null;
 
         public MainForm()
@@ -49,6 +39,8 @@ namespace ThirdLaboratory
 
             InitializeComponent();
             InitializeFormData();
+            cbFuncPlugins = InitializeWithPlugins(cbFuncPlugins, functionalPlugins);
+            cbSerializePlugins = InitializeWithPlugins(cbSerializePlugins, serializePlugins);
 
             var storage = new StorageService();
             action = UpdateList;
@@ -64,6 +56,17 @@ namespace ThirdLaboratory
             }
         }
 
+        private ComboBox InitializeWithPlugins<T>(ComboBox cb, List<T> plugins)
+        {
+            cb.Items.Add("None");
+            cb.SelectedItem = "None";
+            foreach(var plugin in plugins)
+            {
+                cb.Items.Add(plugin);
+            }
+            return cb;
+        }
+
         private void InitializeFormData()
         {
             cbTypes.Items.Add("Dress");
@@ -72,10 +75,6 @@ namespace ThirdLaboratory
             cbTypes.Items.Add("Shirt");
             cbTypes.Items.Add("Socks");
             cbTypes.Items.Add("Outwear");
-            cbFuncPlugins.Items.Add("None");
-            cbFuncPlugins.SelectedItem = "None";
-            cbSerializePlugins.Items.Add("None");
-            cbSerializePlugins.SelectedItem = "None";
 
             dFormConstructors = new Dictionary<string, Func<Form>>();
             dFormConstructors.Add("Dress", () => { return new DressForm(); });
@@ -96,14 +95,6 @@ namespace ThirdLaboratory
             foreach(var plugin in dataPlugins)
             {
                 plugin.Activate(ref dFormConstructors, ref dEditFormConstructors, ref cbTypes);
-            }
-            foreach(var plugin in functionalPlugins)
-            {
-                cbFuncPlugins.Items.Add(plugin);
-            }
-            foreach(var plugin in serializePlugins)
-            {
-                cbSerializePlugins.Items.Add(plugin);
             }
         }
 
