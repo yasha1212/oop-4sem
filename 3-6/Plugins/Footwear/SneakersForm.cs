@@ -13,6 +13,8 @@ namespace Footwear
 {
     public partial class SneakersForm : Form
     {
+        StorageService storage = StorageService.GetInstance();
+
         public SneakersForm()
         {
             InitializeComponent();
@@ -24,7 +26,7 @@ namespace Footwear
             InitializeComponent();
             InitializeForm();
 
-            Sneakers item = (Sneakers)StorageService.GetItem(itemName);
+            Sneakers item = (Sneakers)storage.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
@@ -47,7 +49,7 @@ namespace Footwear
                tPrice.TextLength > 0 && tColor.TextLength > 0 && cbShoelaces.SelectedIndex != -1)
             {
                 var sneakers = new Sneakers(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tColor.Text, (bool)cbShoelaces.SelectedItem);
-                StorageService.AddItem(sneakers);
+                storage.AddItem(sneakers);
                 this.Close();
             }
         }

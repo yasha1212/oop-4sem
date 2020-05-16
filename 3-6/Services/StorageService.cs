@@ -8,15 +8,26 @@ namespace ThirdLaboratory
 {
     public class StorageService
     {
-        private static Dictionary<string, Clothes> clothes;
-        private static event Action UpdateUI;
+        private static StorageService instance;
 
-        public StorageService()
+        private Dictionary<string, Clothes> clothes;
+        private event Action UpdateUI;
+
+        private StorageService()
         {
             clothes = new Dictionary<string, Clothes>();
         }
 
-        public static Clothes GetItem(string name)
+        public static StorageService GetInstance()
+        {
+            if(instance == null)
+            {
+                instance = new StorageService();
+            }
+            return instance;
+        }
+
+        public Clothes GetItem(string name)
         {
             return clothes[name];
         }
@@ -26,7 +37,7 @@ namespace ThirdLaboratory
             UpdateUI += updateHandler;
         }
 
-        public static void AddItem(Clothes item)
+        public void AddItem(Clothes item)
         {
             if(clothes.ContainsKey(item.Name))
             {
@@ -40,13 +51,13 @@ namespace ThirdLaboratory
             UpdateUI?.Invoke();
         }
 
-        public static void DeleteItem(string name)
+        public void DeleteItem(string name)
         {
             clothes.Remove(name);
             UpdateUI?.Invoke();
         }
 
-        public static List<Clothes> GetList()
+        public List<Clothes> GetList()
         {
             var clothesList = new List<Clothes>();
             foreach(Clothes item in clothes.Values)
@@ -56,7 +67,7 @@ namespace ThirdLaboratory
             return clothesList;
         }
 
-        public static void ClearStorage()
+        public void ClearStorage()
         {
             clothes.Clear();
         }

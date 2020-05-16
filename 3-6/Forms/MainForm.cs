@@ -25,6 +25,7 @@ namespace ThirdLaboratory
         List<ISerializePlugin> serializePlugins;
         IFunctionalPlugin currentFuncPlugin = null;
         ISerializePlugin currentSerializePlugin = null;
+        StorageService storage;
 
         public MainForm()
         {
@@ -42,7 +43,7 @@ namespace ThirdLaboratory
             cbFuncPlugins = InitializeWithPlugins(cbFuncPlugins, functionalPlugins);
             cbSerializePlugins = InitializeWithPlugins(cbSerializePlugins, serializePlugins);
 
-            var storage = new StorageService();
+            storage = StorageService.GetInstance();
             action = UpdateList;
             storage.SetUpdateHandler(action);
         }
@@ -50,7 +51,7 @@ namespace ThirdLaboratory
         private void UpdateList()
         {
             lbClothes.Items.Clear();
-            foreach(Clothes item in StorageService.GetList())
+            foreach(Clothes item in storage.GetList())
             {
                 lbClothes.Items.Add(item.Name);
             }
@@ -108,7 +109,7 @@ namespace ThirdLaboratory
                 {
                     using (var file = new FileStream(path, FileMode.Create))
                     {
-                        var byteArr = currentSerializePlugin.Serialize(StorageService.GetList());
+                        var byteArr = currentSerializePlugin.Serialize(storage.GetList());
                         if (currentFuncPlugin != null)
                         {
                             byteArr = currentFuncPlugin.ProcessOutput(byteArr, path);
@@ -137,10 +138,10 @@ namespace ThirdLaboratory
                             byteArr = currentFuncPlugin.ProcessInput(byteArr, path);
                         }
                         var objList = currentSerializePlugin.Deserialize(byteArr);
-                        StorageService.ClearStorage();
+                        storage.ClearStorage();
                         foreach (var item in objList)
                         {
-                            StorageService.AddItem(item);
+                            storage.AddItem(item);
                         }
                     }
                 }
@@ -162,7 +163,7 @@ namespace ThirdLaboratory
         {
             if(lbClothes.SelectedIndex != -1)
             {
-                StorageService.DeleteItem(lbClothes.SelectedItem.ToString());
+                storage.DeleteItem(lbClothes.SelectedItem.ToString());
             }
         }
 
@@ -171,7 +172,7 @@ namespace ThirdLaboratory
             if(lbClothes.SelectedIndex != -1)
             {
                 string itemName = lbClothes.SelectedItem.ToString();
-                var item = StorageService.GetItem(itemName);
+                var item = storage.GetItem(itemName);
                 Func<string, Form> function = dEditFormConstructors[item.GetType()];
                 Form form = function(itemName);
                 form.ShowDialog();

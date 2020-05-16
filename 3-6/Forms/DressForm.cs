@@ -12,6 +12,8 @@ namespace ThirdLaboratory
 {
     public partial class DressForm : Form
     {
+        StorageService storage = StorageService.GetInstance();
+
         public DressForm()
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace ThirdLaboratory
             InitializeComponent();
             InitializeForm();
 
-            Dress item = (Dress)StorageService.GetItem(itemName);
+            Dress item = (Dress)storage.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
@@ -54,7 +56,7 @@ namespace ThirdLaboratory
                tPrice.TextLength > 0 && tLength.TextLength > 0 && cbType.SelectedIndex != -1 && tColor.TextLength > 0)
             {
                 var dress = new Dress(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), (DressType)cbType.SelectedItem, tColor.Text, Convert.ToDouble(tLength.Text));
-                StorageService.AddItem(dress);
+                storage.AddItem(dress);
                 this.Close();
             }
         }

@@ -12,6 +12,8 @@ namespace ThirdLaboratory
 {
     public partial class SocksForm : Form
     {
+        StorageService storage = StorageService.GetInstance();
+
         public SocksForm()
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace ThirdLaboratory
             InitializeComponent();
             InitializeForm();
 
-            Socks item = (Socks)StorageService.GetItem(itemName);
+            Socks item = (Socks)storage.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
@@ -50,7 +52,7 @@ namespace ThirdLaboratory
                tPrice.TextLength > 0 && tColor.TextLength > 0 && cbType.SelectedIndex != -1)
             {
                 var socks = new Socks(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tColor.Text, (LengthType)cbType.SelectedItem);
-                StorageService.AddItem(socks);
+                storage.AddItem(socks);
                 this.Close();
             }
         }

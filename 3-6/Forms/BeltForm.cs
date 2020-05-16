@@ -12,6 +12,8 @@ namespace ThirdLaboratory
 {
     public partial class BeltForm : Form
     {
+        StorageService storage = StorageService.GetInstance();
+
         public BeltForm()
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace ThirdLaboratory
             InitializeComponent();
             InitializeForm();
 
-            Belt item = (Belt)StorageService.GetItem(itemName);
+            Belt item = (Belt)storage.GetItem(itemName);
             tName.Text = item.Name;
             tProducer.Text = item.Producer;
             tMaterial.Text = item.MainMaterial;
@@ -47,7 +49,7 @@ namespace ThirdLaboratory
                tPrice.TextLength > 0 && tBuckleMaterial.TextLength > 0 && cbBuckleType.SelectedIndex != -1)
             {
                 var belt = new Belt(tName.Text, tProducer.Text, tMaterial.Text, Convert.ToDouble(tPrice.Text), tBuckleMaterial.Text, (Buckle)cbBuckleType.SelectedItem);
-                StorageService.AddItem(belt);
+                storage.AddItem(belt);
                 this.Close();
             }
         }
