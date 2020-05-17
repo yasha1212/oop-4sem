@@ -24,8 +24,6 @@ namespace ThirdLaboratory
         List<IDataPlugin> dataPlugins;
         List<IFunctionalPlugin> functionalPlugins;
         List<ISerializePlugin> serializePlugins;
-        IFunctionalPlugin currentFuncPlugin = null;
-        ISerializePlugin currentSerializePlugin = null;
         StorageService storage;
         MainAppProcessor appProcessor;
 

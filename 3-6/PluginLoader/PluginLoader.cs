@@ -19,15 +19,13 @@ namespace ThirdLaboratory
 
         public List<T> Load()
         {
-            List<T> plugins = null;
-
             var dirInfo = new DirectoryInfo(Path);
             if(!dirInfo.Exists)
             {
                 dirInfo.Create();
             }
 
-            plugins = new List<T>();
+            var plugins = new List<T>();
             var files = Directory.GetFiles(Path, "*.dll");
             foreach(var file in files)
             {
