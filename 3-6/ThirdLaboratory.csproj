@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bridge\AbstractProcessor.cs" />
+    <Compile Include="Bridge\MainAppProcessor.cs" />
     <Compile Include="DataClasses\Belt.cs" />
     <Compile Include="Forms\BeltForm.cs">
       <SubType>Form</SubType>

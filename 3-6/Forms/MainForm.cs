@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ThirdLaboratory.Bridge;
 
 namespace ThirdLaboratory
 {
@@ -26,6 +27,7 @@ namespace ThirdLaboratory
         IFunctionalPlugin currentFuncPlugin = null;
         ISerializePlugin currentSerializePlugin = null;
         StorageService storage;
+        MainAppProcessor appProcessor;
 
         public MainForm()
         {
@@ -42,6 +44,8 @@ namespace ThirdLaboratory
             InitializeFormData();
             cbFuncPlugins = InitializeWithPlugins(cbFuncPlugins, functionalPlugins);
             cbSerializePlugins = InitializeWithPlugins(cbSerializePlugins, serializePlugins);
+
+            appProcessor = new MainAppProcessor();
 
             storage = StorageService.GetInstance();
             action = UpdateList;
@@ -101,19 +105,15 @@ namespace ThirdLaboratory
 
         private void bSerialize_Click(object sender, EventArgs e)
         {
-            if (currentSerializePlugin != null)
+            saveFileDialog.ShowDialog();
+            string path = saveFileDialog.FileName;
+            if ("" != path)
             {
-                saveFileDialog.ShowDialog();
-                string path = saveFileDialog.FileName;
-                if ("" != path)
+                using (var file = new FileStream(path, FileMode.Create))
                 {
-                    using (var file = new FileStream(path, FileMode.Create))
+                    var byteArr = appProcessor.ProcessOutput(storage.GetList(), path);
+                    if (byteArr != null)
                     {
-                        var byteArr = currentSerializePlugin.Serialize(storage.GetList());
-                        if (currentFuncPlugin != null)
-                        {
-                            byteArr = currentFuncPlugin.ProcessOutput(byteArr, path);
-                        }
                         file.Write(byteArr, 0, byteArr.Length);
                     }
                 }
@@ -122,22 +122,18 @@ namespace ThirdLaboratory
 
         private void bDeserialize_Click(object sender, EventArgs e)
         {
-            if (currentSerializePlugin != null)
+            openFileDialog.ShowDialog();
+            string path = openFileDialog.FileName;
+            if ("" != path)
             {
-                openFileDialog.ShowDialog();
-                string path = openFileDialog.FileName;
-                if ("" != path)
+                using (var file = new FileStream(path, FileMode.Open))
                 {
-                    using (var file = new FileStream(path, FileMode.Open))
+                    var tempStream = new MemoryStream();
+                    file.CopyTo(tempStream);
+                    var byteArr = tempStream.ToArray();
+                    var objList = appProcessor.ProcessInput(byteArr, path);
+                    if (objList != null)
                     {
-                        var tempStream = new MemoryStream();
-                        file.CopyTo(tempStream);
-                        var byteArr = tempStream.ToArray();
-                        if (currentFuncPlugin != null)
-                        {
-                            byteArr = currentFuncPlugin.ProcessInput(byteArr, path);
-                        }
-                        var objList = currentSerializePlugin.Deserialize(byteArr);
                         storage.ClearStorage();
                         foreach (var item in objList)
                         {
@@ -185,11 +181,11 @@ namespace ThirdLaboratory
             {
                 if (cbSerializePlugins.SelectedItem as string == "None")
                 {
-                    currentSerializePlugin = null;
+                    appProcessor.SerializePlugin = null;
                 }
                 else
                 {
-                    currentSerializePlugin = cbSerializePlugins.SelectedItem as ISerializePlugin;
+                    appProcessor.SerializePlugin = cbSerializePlugins.SelectedItem as ISerializePlugin;
                 }
             }
         }
@@ -200,11 +196,11 @@ namespace ThirdLaboratory
             {
                 if (cbFuncPlugins.SelectedItem as string == "None")
                 {
-                    currentFuncPlugin = null;
+                    appProcessor.FunctionalPlugin = null;
                 }
                 else
                 {
-                    currentFuncPlugin = cbFuncPlugins.SelectedItem as IFunctionalPlugin;
+                    appProcessor.FunctionalPlugin = cbFuncPlugins.SelectedItem as IFunctionalPlugin;
                 }
             }
         }
